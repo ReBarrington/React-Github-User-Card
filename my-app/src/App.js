@@ -1,46 +1,56 @@
 import React from 'react';
 import axios from 'axios';
+import Githubs from "./Githubs";
 // import './styles.css';
 
 class App extends React.Component {
   state = {
     githubs: [],
-    githubText: ''
+    githubLogin: ''
   };
 
   componentDidMount() {
     axios
-      .get('https://api.github.com/users/ReBarrington/followers')
+      .get('https://api.github.com/users/ReBarrington')
       .then(res => {
         // res.data.message
-        console.log(res.data, " is res.data, an array of logins")
+        console.log(res.data, " is res.data")
         this.setState({
-          githubs: res.data
+          githubs: [res.data],
+          githubLogin: res.data.login
+        });
+      })
+      .catch(err => console.log(err.message));
+
+    axios
+      .get('https://api.github.com/users/ReBarrington/followers')
+      .then(res => {
+        console.log(res.data, " is res.data from followers")
+        this.setState({
+          githubs: [res.data],
+          githubLogin: res.data.login
         });
       })
       .catch(err => console.log(err.message));
   }
 
   componentDidUpdate(prevProps, prevState) {
+    console.log('CDU is running');
     if (prevState.githubs !== this.state.githubs) {
-      console.log('new github array');
+      console.log('Githubs state has updated!');
+    }
+    if (prevProps.id !== this.props.id) {
     }
   }
-
-  handleChanges = e => {
-    this.setState({
-      githubText: e.target.value
-    });
-  };
 
   fetchGithubs = e => {
     e.preventDefault();
     axios
-      .get(`https://github.com/${this.state.githubText}`)
+      .get(`https://github.com/${this.state.githubLogin}`)
       .then(res => {
         // res.data.message
         this.setState({
-          githubs: res.data.message
+          githubs: [res.data]
         });
       })
       .catch(err => console.log(err.message));
@@ -50,11 +60,18 @@ class App extends React.Component {
     return (
       <div className="App">
         <h1>Github</h1>
-        <input value={this.state.githubText} onChange={this.handleChanges} />
-        <button onClick={this.fetchGithubs}>Fetch Githubs</button>
         <div className="githubs">
           {this.state.githubs.map(github => (
-            <h1>{github.username}</h1>
+            console.log(github, " is github in .map")
+            <Githubs 
+              name={github.name} 
+              bio={github.bio} 
+              location={github.location}
+              login={github.githubLogin} 
+              profilepic={github.avatar_url} 
+              followers={github.followers}
+              following={github.following}
+            />
           ))}
         </div>
       </div>
