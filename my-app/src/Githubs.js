@@ -13,18 +13,22 @@ const ProfilePic = styled.img `
 
 const Githubs = props => {
     console.log(props, " is props for Githubs")
+    if (props.length > 0) {
+
+        props.map(username => {
+        console.log(username, " is username in .map")
+            return (
+                <div>
+                    <h1>Username: {username}</h1>
+                </div>
+            );
+        })
+    }
+
     return (
-        <GithubCard className="githubs-container">
-            <div className="left-side">
-                <h1>{props.name}</h1>
-                <h2>Username: {props.login}</h2>
-                <p>{props.bio}</p>
-                <p>Location: {props.location}</p>
-                <p>Followers: {props.followers}</p>
-                <p>Following: {props.following}</p>
-            </div>
-            <ProfilePic src={props.profilepic}></ProfilePic>
-        </GithubCard>
+        <div>
+
+        </div>
     )
 }
 

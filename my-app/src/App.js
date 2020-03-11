@@ -5,8 +5,9 @@ import Githubs from "./Githubs";
 
 class App extends React.Component {
   state = {
-    githubs: [],
-    githubLogin: ''
+    // githubs: [],
+    githubLogin: [],
+    githubPicture: []
   };
 
   componentDidMount() {
@@ -16,8 +17,9 @@ class App extends React.Component {
         // res.data.message
         console.log(res.data, " is res.data")
         this.setState({
-          githubs: [res.data],
-          githubLogin: res.data.login
+          // githubs: res.data,
+          githubLogin: res.data.login,
+          githubPicture: res.data.avatar_url
         });
       })
       .catch(err => console.log(err.message));
@@ -27,8 +29,9 @@ class App extends React.Component {
       .then(res => {
         console.log(res.data, " is res.data from followers")
         this.setState({
-          githubs: [res.data],
-          githubLogin: res.data.login
+          // githubs: res.data,
+          githubLogin: [...this.state.githubLogin, res.data.login],
+          githubPicture: res.data.avatar_url
         });
       })
       .catch(err => console.log(err.message));
@@ -43,25 +46,28 @@ class App extends React.Component {
     }
   }
 
-  fetchGithubs = e => {
-    e.preventDefault();
-    axios
-      .get(`https://github.com/${this.state.githubLogin}`)
-      .then(res => {
-        // res.data.message
-        this.setState({
-          githubs: [res.data]
-        });
-      })
-      .catch(err => console.log(err.message));
-  };
+  // fetchGithubs = e => {
+  //   e.preventDefault();
+  //   axios
+  //     .get(`https://github.com/${this.state.githubLogin}`)
+  //     .then(res => {
+  //       // res.data.message
+  //       this.setState({
+  //         githubs: [res.data]
+  //       });
+  //     })
+  //     .catch(err => console.log(err.message));
+  // };
 
   render() {
     return (
       <div className="App">
         <h1>Github</h1>
         <div className="githubs">
-          {this.state.githubs.map(github => (
+            {console.log(this.state.githubLogin)}
+          <Githubs githubLogin={this.state.githubLogin} githubPicture={this.state.githubPicture} />
+
+          {/* {this.state.githubs.map(github => (
             console.log(github, " is github in .map")
             <Githubs 
               name={github.name} 
@@ -72,7 +78,7 @@ class App extends React.Component {
               followers={github.followers}
               following={github.following}
             />
-          ))}
+          ))} */}
         </div>
       </div>
     );
