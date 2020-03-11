@@ -16,10 +16,10 @@ const Githubs = props => {
     return (
       props.githubData.map(userData => {
         return (
-          <div>
+          <GithubCard>
             <h1>Username: {userData.login}</h1>
-            <img src={userData.avatar_url} alt="profile" />
-          </div>
+            <ProfilePic src={userData.avatar_url} alt="profile" />
+          </GithubCard>
         );
       })
     );
