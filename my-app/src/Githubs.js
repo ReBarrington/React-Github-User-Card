@@ -12,24 +12,22 @@ const ProfilePic = styled.img `
 `
 
 const Githubs = props => {
-    console.log(props, " is props for Githubs")
-    if (props.length > 0) {
-
-        props.map(username => {
-        console.log(username, " is username in .map")
-            return (
-                <div>
-                    <h1>Username: {username}</h1>
-                </div>
-            );
-        })
-    }
-
+    if (props.githubData.length > 0) {
     return (
-        <div>
-
-        </div>
-    )
+      props.githubData.map(userData => {
+        return (
+          <div>
+            <h1>Username: {userData.login}</h1>
+            <img src={userData.avatar_url} alt="profile" />
+          </div>
+        );
+      })
+    );
+}
+  return (
+    <div></div>
+ );
 }
 
 export default Githubs;
+

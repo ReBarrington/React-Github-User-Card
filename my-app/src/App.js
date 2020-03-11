@@ -1,25 +1,18 @@
-import React from 'react';
-import axios from 'axios';
-import Githubs from "./Githubs";
-// import './styles.css';
+import React from "react";
+import axios from "axios";
+import Githubs from "./Githubs"
 
 class App extends React.Component {
   state = {
-    // githubs: [],
-    githubLogin: [],
-    githubPicture: []
+    githubData: [],
   };
-
+  
   componentDidMount() {
     axios
       .get('https://api.github.com/users/ReBarrington')
       .then(res => {
-        // res.data.message
-        console.log(res.data, " is res.data")
         this.setState({
-          // githubs: res.data,
-          githubLogin: res.data.login,
-          githubPicture: res.data.avatar_url
+          githubData: [...this.state.githubData, res.data],
         });
       })
       .catch(err => console.log(err.message));
@@ -27,63 +20,24 @@ class App extends React.Component {
     axios
       .get('https://api.github.com/users/ReBarrington/followers')
       .then(res => {
-        console.log(res.data, " is res.data from followers")
         this.setState({
-          // githubs: res.data,
-          githubLogin: [...this.state.githubLogin, res.data.login],
-          githubPicture: res.data.avatar_url
+          githubData: [...this.state.githubData, ...res.data],
         });
       })
       .catch(err => console.log(err.message));
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log('CDU is running');
-    if (prevState.githubs !== this.state.githubs) {
-      console.log('Githubs state has updated!');
-    }
-    if (prevProps.id !== this.props.id) {
-    }
-  }
-
-  // fetchGithubs = e => {
-  //   e.preventDefault();
-  //   axios
-  //     .get(`https://github.com/${this.state.githubLogin}`)
-  //     .then(res => {
-  //       // res.data.message
-  //       this.setState({
-  //         githubs: [res.data]
-  //       });
-  //     })
-  //     .catch(err => console.log(err.message));
-  // };
 
   render() {
     return (
       <div className="App">
         <h1>Github</h1>
         <div className="githubs">
-            {console.log(this.state.githubLogin)}
-          <Githubs githubLogin={this.state.githubLogin} githubPicture={this.state.githubPicture} />
-
-          {/* {this.state.githubs.map(github => (
-            console.log(github, " is github in .map")
-            <Githubs 
-              name={github.name} 
-              bio={github.bio} 
-              location={github.location}
-              login={github.githubLogin} 
-              profilepic={github.avatar_url} 
-              followers={github.followers}
-              following={github.following}
-            />
-          ))} */}
+          <Githubs githubData={this.state.githubData} />
         </div>
       </div>
     );
   }
 }
 
-export default App;
+export default App
 
